@@ -5,6 +5,8 @@ class Gvim <Formula
   @homepage='http://www.vim.org/'
   @md5='5b9510a17074e2b37d8bb38ae09edbf2'
 
+  depends_on 'gtk+'
+
   def install
     system "./configure",
       "--with-x",
