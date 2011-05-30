@@ -6,6 +6,8 @@ class Dwm < Formula
   md5 'f0b422bfeaa812d66c6dd15c3cc92a6b'
   head 'http://hg.suckless.org/dwm'
 
+  depends_on "dmenu"
+
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with
     # the Mac OS X Log Out shortcut in the Apple menu.
@@ -19,6 +21,14 @@ class Dwm < Formula
 
     inreplace 'dwm.1', '.B Mod1\-Shift\-q', '.B Mod1\-Control\-q'
     system "make PREFIX=#{prefix} install"
+  end
+
+  def patches
+    [
+      "http://dwm.suckless.org/patches/dwm-5.7.2-attachaside.diff",
+      "http://dwm.suckless.org/patches/dwm-5.7.2-urgentborder.diff",
+      "https://gist.github.com/raw/978820/7321d69280d78642ecc288b0fa6ea2f5c773c036/dwm-5.8.2-nametag.diff"
+    ]
   end
 
   def caveats
