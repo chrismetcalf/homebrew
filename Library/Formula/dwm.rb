@@ -27,7 +27,7 @@ class Dwm < Formula
     [
       "http://dwm.suckless.org/patches/dwm-5.7.2-attachaside.diff",
       "http://dwm.suckless.org/patches/dwm-5.7.2-urgentborder.diff",
-      "https://gist.github.com/raw/978820/7321d69280d78642ecc288b0fa6ea2f5c773c036/dwm-5.8.2-nametag.diff"
+      "https://raw.github.com/gist/1016699/4c3c37a3791ef82e77ee4908ad0e1f4bcce2b84f/dwm-5.8.2-nametag-with-indexes.diff"
     ]
   end
 
