@@ -1,16 +1,16 @@
 require 'formula'
 
 class Sbt < Formula
-  url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-tools.sbt/sbt-launch/0.10.0/sbt-launch.jar"
+  url "http://simple-build-tool.googlecode.com/files/sbt-launch-0.7.7.jar"
   homepage 'http://github.com/harrah/xsbt/'
-  version '0.10.0'
-  md5 '9d8ab145a3c4d6d5ee9f76cae6082308'
+  version '0.7.7'
+  md5 '0cce0d5ade30a41b91e05705a9346b71'
 
   def install
     (bin+'sbt').write <<-EOS.undent
       #!/bin/sh
       test -f ~/.sbtconfig && . ~/.sbtconfig
-      exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch-0.7.7.jar "$@"
     EOS
 
     libexec.install Dir['*']

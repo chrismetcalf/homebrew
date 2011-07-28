@@ -10,6 +10,7 @@ class Gvim <Formula
   def install
     system "./configure",
       "--with-x",
+      "--enable-cscope",
       "--disable-netbeans",
       "--enable-gui=gtk2",
       "--with-mac-arch=x86_64",
