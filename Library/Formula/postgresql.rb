@@ -7,7 +7,7 @@ class Postgresql < Formula
   md5 '80390514d568a7af5ab61db1cda27e29'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
+  depends_on 'libxml2'
   depends_on 'ossp-uuid'
 
   def options
