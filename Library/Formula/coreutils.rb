@@ -1,9 +1,5 @@
 require 'formula'
 
-def use_default_names?
-  ARGV.include? '--default-names'
-end
-
 def coreutils_aliases
   s = "brew_prefix=`brew --prefix`\n"
 
@@ -27,26 +23,19 @@ end
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.12.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.12.tar.gz'
-  sha256 '9e233a62c98a3378a7b0483d2ae3d662dbaf6cd3917d3830d3514665e12a85c8'
-
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.14.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.14.tar.xz'
+  sha256 '0d120817c19292edb19e92ae6b8eac9020e03d51e0af9cb116cf82b65d18b02d'
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--program-prefix=g" unless use_default_names?
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
     (prefix+'aliases').write(coreutils_aliases)
   end
 
   def caveats
-    unless use_default_names?; <<-EOS
+    <<-EOS
 All commands have been installed with the prefix 'g'.
 
 A file that aliases these commands to their normal names is available
@@ -61,17 +50,5 @@ which is known to cause problems with "bash-completion".
 
 The man pages are still referenced with the g-prefix.
     EOS
-    else
-      <<-EOS
-Installing coreutils using the default names will cause the utilities to
-shadow system-provided BSD tools if /usr/local/bin is ahead of /usr/bin in
-the path.
-
-This can cause problems in shell scripts.
-
-Some software in Homebrew expects the system-provided tools to be first in
-the path, and builds may fail if the coreutils verions are used instead.
-      EOS
-    end
   end
 end

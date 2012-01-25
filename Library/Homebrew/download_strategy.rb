@@ -76,8 +76,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # Use more than 4 characters to not clash with magicbytes
       magic_bytes = "____pkg"
     else
-      # get the first four bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(4) }
+      # get the first six bytes
+      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
     end
 
     # magic numbers stolen from /usr/share/file/magic/
@@ -88,6 +88,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
+      chdir
+    when /^\xFD7zXZ\x00/ # xz compressed
+      raise "You must install XZutils: brew install xz" unless system "/usr/bin/which -s xz"
+      safe_system "xz -dc #{@tarball_path} | /usr/bin/tar xf -"
       chdir
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
@@ -184,7 +188,7 @@ class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
 end
 
 # This strategy extracts our binary packages.
-class CurlBottleDownloadStrategy <CurlDownloadStrategy
+class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize url, name, version, specs
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
@@ -195,7 +199,7 @@ class CurlBottleDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class SubversionDownloadStrategy <AbstractDownloadStrategy
+class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
