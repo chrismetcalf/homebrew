@@ -6,7 +6,9 @@ class Qt < Formula
   md5 '7960ba8e18ca31f0c6e4895a312f92ff'
 
   bottle do
-    sha1 'd523bfbc1c7e50cdd10b64b1b10db187ec7e7c2b' => :lion
+    version 1
+    sha1 '6ab958b8fbc0595837f12339eaae1e050413ea62' => :snowleopard
+    sha1 '29615109d8bdf97bdd3a193cba0589e7c24db10a' => :lion
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
@@ -93,9 +95,8 @@ class Qt < Formula
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
     # See: https://github.com/mxcl/homebrew/issues/issue/745
-    # TODO - surely this link can be made without the `cd`
     cd prefix do
-      ln_s lib, "Frameworks"
+      ln_s lib, prefix + "Frameworks"
     end
 
     # The pkg-config files installed suggest that headers can be found in the
@@ -104,6 +105,10 @@ class Qt < Formula
     Pathname.glob(lib + '*.framework/Headers').each do |path|
       framework_name = File.basename(File.dirname(path), '.framework')
       ln_s path.realpath, include+framework_name
+    end
+
+    Pathname.glob(bin + '*.app').each do |path|
+      mv path, prefix
     end
   end
 
