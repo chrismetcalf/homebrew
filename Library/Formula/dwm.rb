@@ -20,7 +20,7 @@ class Dwm < Formula
     inreplace 'config.def.h', /selbordercolor\[\]\s+=\s+"#0066ff"/, 'selbordercolor[] = "#FFFF66"'
 
     inreplace 'dwm.1', '.B Mod1\-Shift\-q', '.B Mod1\-Control\-q'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def patches
